@@ -26,6 +26,11 @@ Features
  * Animated jumping between nodes.
  * Highlights node/edge under mouse.
 
+Extra features in this fork
+---------------------------
+
+ * Highlight nodes and its edges with Ctrl-Shift-click.
+
 Known Issues
 ============
 

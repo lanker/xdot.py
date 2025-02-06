@@ -432,6 +432,25 @@ class DotWidget(Gtk.DrawingArea):
         (click on empty space)."""
         return False
 
+    def click_highlight(self, element):
+        highlight_nodes = [element]
+        for edge in self.graph.edges:
+            if edge.src is element or edge.dst is element:
+                highlight_nodes.append(edge)
+
+        for node in highlight_nodes:
+            if not hasattr(node, "shapes"):
+                continue
+            for s in node.shapes:
+                if hasattr(s, "old_pen"):
+                    s.pen = s.old_pen
+                    del s.old_pen
+                else:
+                    s.old_pen = s.pen.copy()
+                    s.pen.color = (0, 0.7, 1, 1)
+                    s.pen.fillcolor = (0, 0.2, 0.5, 1)
+        self.queue_draw()
+
     def on_area_button_release(self, area, event):
         self.drag_action.on_button_release(event)
         self.drag_action = actions.NullAction(self)
@@ -445,6 +464,9 @@ class DotWidget(Gtk.DrawingArea):
                 url = self.get_url(x, y)
                 if url is not None:
                     self.emit('clicked', url.url, event)
+                elif event.state & Gdk.ModifierType.SHIFT_MASK and event.state & Gdk.ModifierType.CONTROL_MASK:
+                    item = self.get_element(x, y)
+                    self.click_highlight(item)
                 else:
                     ctrl_held = event.state & Gdk.ModifierType.CONTROL_MASK
                     jump = self.get_jump(x, y, to_dst=ctrl_held)
