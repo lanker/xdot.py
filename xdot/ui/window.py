@@ -443,10 +443,15 @@ class DotWidget(Gtk.DrawingArea):
         return False
 
     def click_highlight(self, element):
-        highlight_nodes = [element]
+        highlight_nodes = {element}
+        highlight_nodes_second = set()
         for edge in self.graph.edges:
             if edge.src is element or edge.dst is element:
-                highlight_nodes.append(edge)
+                highlight_nodes.add(edge)
+                if not edge.src is element:
+                    highlight_nodes_second.add(edge.src)
+                if not edge.dst is element:
+                    highlight_nodes_second.add(edge.dst)
 
         for node in highlight_nodes:
             if not hasattr(node, "shapes"):
