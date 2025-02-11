@@ -350,6 +350,16 @@ class DotWidget(Gtk.DrawingArea):
             textentry = find_toolitem.get_children()
             win.set_focus(textentry[0])
             return True
+        if event.keyval == Gdk.KEY_c:
+            for element in self.graph.nodes + self.graph.edges + self.graph.shapes:
+                if not hasattr(element, "shapes"):
+                    continue
+                for s in element.shapes:
+                    if hasattr(s, "old_pen"):
+                        s.pen = s.old_pen
+                        del s.old_pen
+            self.queue_draw()
+            return True
         if event.keyval == Gdk.KEY_q:
             Gtk.main_quit()
             return True

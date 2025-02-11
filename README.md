@@ -29,7 +29,7 @@ Features
 Extra features in this fork
 ---------------------------
 
- * Highlight nodes and its edges with Ctrl-Shift-click.
+ * Highlight nodes and its edges with Ctrl-Shift-click. Clear highlights with C.
 
 Known Issues
 ============
